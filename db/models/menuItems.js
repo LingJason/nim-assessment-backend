@@ -82,11 +82,21 @@ const update = async (id, body) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    const menuItem = await MenuItems.findByIdAndDelete(id);
+    return menuItem.id;
+  } catch (error) {
+    return error;
+  }
+}
+
 
 module.exports = {
   getAll,
   getOne,
   create,
   update,
+  deleteProduct,
   MenuItems
 };

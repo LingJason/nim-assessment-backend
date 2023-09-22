@@ -29,11 +29,20 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const menu = await MenuItems.update(req.params.id, req.body);
-    res.send(menu);
+    const menuItem = await MenuItems.update(req.params.id, req.body);
+    res.send(menuItem);
   } catch (error) {
     res.status(500).send(error);
   }
 };
 
-module.exports = { getAll, getOne, create, update };
+const deleteProduct = async (req, res) => {
+  try {
+    const menuItem = await MenuItems.deleteProduct(req.params.id);
+    res.send(menuItem);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+} 
+
+module.exports = { getAll, getOne, create, update, deleteProduct };

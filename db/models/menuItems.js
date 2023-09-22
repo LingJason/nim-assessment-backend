@@ -16,11 +16,12 @@ const menuItemsSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: String
+  },
+  updatedAt: {
+    type: Date
   }
 });
-menuItemsSchema.set("toJSON", {
-  virtuals: true
-});
+menuItemsSchema.set("toJSON", {virtuals: true});
 // menu model
 const MenuItems = mongoose.model("MenuItems", menuItemsSchema);
 
@@ -51,4 +52,41 @@ const create = async (body) => {
   }
 };
 
-module.exports = { getAll, getOne, create, MenuItems };
+const update = async (id, body) => {
+  try {
+    const menuItem = await MenuItems.findByIdAndUpdate(id);
+
+    if(!menuItem) {
+      return error;
+    }
+
+    if (body.name) {
+      menuItem.name = body.name;
+    }
+    if (body.price) {
+      menuItem.price = body.price;
+    }
+    if (body.description) {
+      menuItem.description = body.description;
+    }
+    if (body.imageUrl) {
+      menuItem.imageUrl = body.imageUrl;
+    }
+
+    menuItem.updatedAt = new Date();
+
+    const updateMenuItem = await menuItem.save();
+    return updateMenuItem;
+  } catch (error) {
+    return error;
+  }
+};
+
+
+module.exports = {
+  getAll,
+  getOne,
+  create,
+  update,
+  MenuItems
+};

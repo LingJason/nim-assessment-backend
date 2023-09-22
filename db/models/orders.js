@@ -62,6 +62,15 @@ const getOne = async (id) => {
   return order;
 };
 
+const getOrdersByStatus = async (status) => {
+  try {
+    const orders = await Order.find({ status }).populate("items.item");
+    return orders;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getTotalSales = async () => {
   const orders = await Order.find().populate("items.item");
   const totalSales = orders.reduce((total, order) => {
@@ -99,6 +108,7 @@ const getByStatus = async (status) => {
 module.exports = {
   getAll,
   getOne,
+  getOrdersByStatus,
   getTotalSales,
   create,
   update,

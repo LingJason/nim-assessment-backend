@@ -18,6 +18,15 @@ const getOne = async (req, res) => {
   }
 };
 
+const search = async (req, res) => {
+  try {
+    const menu = await MenuItems.search(req.query.q);
+    res.send(menu);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const create = async (req, res) => {
   try {
     const menu = await MenuItems.create(req.body);
@@ -43,6 +52,6 @@ const deleteProduct = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
-} 
+};
 
-module.exports = { getAll, getOne, create, update, deleteProduct };
+module.exports = { getAll, getOne, search, create, update, deleteProduct };

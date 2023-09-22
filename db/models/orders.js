@@ -62,6 +62,20 @@ const getOne = async (id) => {
   return order;
 };
 
+const getTotalSales = async () => {
+  const orders = await Order.find().populate("items.item");
+  const totalSales = orders.reduce((total, order) => {
+    const orderTotalPrice = order.items.reduce((orderTotal, orderItem) => {
+      const menuItem = orderItem.item;
+      return orderTotal + menuItem.price * orderItem.quantity;
+    }, 0);
+
+    return total + orderTotalPrice;
+  }, 0);
+
+  return { total: totalSales };
+};
+
 const create = async (body) => {
   const order = await Order.create(body);
   return order;
@@ -85,6 +99,7 @@ const getByStatus = async (status) => {
 module.exports = {
   getAll,
   getOne,
+  getTotalSales,
   create,
   update,
   remove,
